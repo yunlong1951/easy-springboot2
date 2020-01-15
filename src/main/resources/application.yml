@@ -1,0 +1,58 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /easy/
+
+file:
+  upload:
+    staticAccessPath: /upload/**
+    staticPath: /upload/
+    uploadFolder: e:\\uploadFiles\\
+
+
+spring:
+  http:
+    encoding:
+      charset: UTF-8
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    cache: false
+  datasource:
+    name: test
+    url: jdbc:mysql://192.168.1.137:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: root
+    password: Zibohehe2016
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+  #  thymeleaf:
+  #    cache: false
+  #    enabled: false
+  mvc:
+    view:
+      prefix: /templates/
+      suffix: .html
+  servlet:
+    multipart:
+      maxFileSize: 100MB
+      maxRequestSize: 100MB
+
+logging:
+  level:
+    com.example.boot.dao: debug
+    com.example.boot.controller: info
+    org.springframework: WARN
+    org.spring.springboot.dao: debug
+
+#利用mybatis-plus 配置枚举类型
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.example.boot.domain
+
+#pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
