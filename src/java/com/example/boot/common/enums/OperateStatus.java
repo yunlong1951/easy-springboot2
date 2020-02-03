@@ -9,4 +9,17 @@ public enum OperateStatus {
     OperateStatus(int value) {
         this.value = value;
     }
+    
+    public static OperateStatus getType(int value) {
+    	for (OperateStatus operateStatus : OperateStatus.values()) {
+			if (operateStatus.value == value) {
+				return operateStatus;
+			}
+		}
+    	return null;
+    }
+    
+    public static Integer getValue(OperateStatus operateStatus) {
+    	return operateStatus.value;
+    }
 }

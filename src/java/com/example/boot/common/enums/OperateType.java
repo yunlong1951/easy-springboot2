@@ -8,4 +8,16 @@ public enum OperateType {
     OperateType(int value) {
         this.value = value;
     }
+    public static OperateType getType(int value) {
+    	for (OperateType operateType : OperateType.values()) {
+			if (operateType.value == value) {
+				return operateType;
+			}
+		}
+    	return null;
+    }
+    
+    public static Integer getValue(OperateType operateType) {
+    	return operateType.value;
+    }
 }

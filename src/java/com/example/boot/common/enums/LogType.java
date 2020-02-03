@@ -16,4 +16,8 @@ public enum LogType {
 		}
     	return null;
     }
+    
+    public static Integer getValue(LogType logType) {
+		return logType.value;
+	}
 }

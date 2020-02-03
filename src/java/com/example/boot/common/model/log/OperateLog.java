@@ -9,7 +9,7 @@ import com.example.boot.common.enums.OperateType;
 
 public class OperateLog extends BaseModel {
 	private Long id;
-	
+
 	/**
 	 * 模块标题
 	 */
@@ -67,9 +67,17 @@ public class OperateLog extends BaseModel {
 
 	private LogType logType; // 日志类型
 
+	private String logInfo;
+
 	private static final long serialVersionUID = 1L;
-	
-	
+
+	public String getLogInfo() {
+		return logInfo;
+	}
+
+	public void setLogInfo(String logInfo) {
+		this.logInfo = logInfo;
+	}
 
 	@Override
 	public String toString() {
@@ -95,12 +103,20 @@ public class OperateLog extends BaseModel {
 		this.title = title;
 	}
 
-	public OperateType getAction() {
-		return action;
+	public Integer getAction() {
+		return OperateType.getValue(action);
+	}
+
+	public OperateType getActionType() {
+		return this.action;
 	}
 
 	public void setAction(OperateType action) {
 		this.action = action;
+	}
+
+	public void setAction(Integer action) {
+		this.action = OperateType.getType(action);
 	}
 
 	public String getMethod() {
@@ -151,8 +167,16 @@ public class OperateLog extends BaseModel {
 		this.operateParam = operateParam;
 	}
 
-	public OperateStatus getStatus() {
+	public Integer getStatus() {
+		return OperateStatus.getValue(status);
+	}
+
+	public OperateStatus getStatusType() {
 		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = OperateStatus.getType(status);
 	}
 
 	public void setStatus(OperateStatus status) {
@@ -179,12 +203,16 @@ public class OperateLog extends BaseModel {
 		return logType;
 	}
 
+	public LogType getLogTypeType() {
+		return logType;
+	}
+
 	public void setLogType(LogType logType) {
 		this.logType = logType;
 	}
-	
-	
 
-	
-		
+	public void setLogType(Integer logType) {
+		this.logType = LogType.getType(logType);
+	}
+
 }
