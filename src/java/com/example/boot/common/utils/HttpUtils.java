@@ -167,6 +167,10 @@ public class HttpUtils {
         return result.toString();
     }
 
+    public static String doPost(String uri){
+        return "";
+    }
+
     private static class TrustAnyTrustManager implements X509TrustManager {
         @Override
         public void checkClientTrusted(X509Certificate[] chain, String authType) {
