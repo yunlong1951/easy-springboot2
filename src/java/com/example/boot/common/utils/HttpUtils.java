@@ -9,7 +9,10 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -18,8 +21,19 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import com.alibaba.fastjson.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class HttpUtils {
 	private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
@@ -167,8 +181,51 @@ public class HttpUtils {
         return result.toString();
     }
 
-    public static String doPost(String uri){
-        return "";
+    public static String doPost(String uri, Map<String,String> head,Map<String,Object> param){
+        CloseableHttpResponse response = null;
+//        BufferedReader in = null;
+        String result = "";
+        HttpClient client = HttpClientBuilder.create().build();
+        HttpPost post = new HttpPost(uri);
+        post.setHeader("content-type","application/json; charset=UTF-8");
+        post.setHeader("Accept", "application/json");
+        //添加自定义头
+        if (head!=null){
+            for (Map.Entry<String, String> m : head.entrySet()) {
+                post.setHeader(m.getKey(),m.getValue());
+            }
+        }
+        log.info("请求地址为："+uri);
+        //处理参数，参数全部转换成json字符串
+        String params = JSONObject.toJSONString(param);
+        log.info("请求参数为："+params);
+        post.setEntity(new StringEntity(params, Charset.forName("UTF-8")));
+        try {
+            response = (CloseableHttpResponse) client.execute(post);
+            HttpEntity httpEntity = response.getEntity();
+            log.info("返回值长度："+httpEntity.getContentLength());
+            result = EntityUtils.toString(httpEntity,Charset.forName("UTF-8"));
+            log.info("返回值为："+result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                response.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        String url = "http://47.95.2.78:8020/user/login";
+        Map<String,Object> map = new HashMap<>();
+        map.put("username","hm188");
+        map.put("password","C33367701511B4F6020EC61DED352059");
+        map.put("type","0");
+        String result= doPost(url,null,map);
+        System.out.println(result);
     }
 
     private static class TrustAnyTrustManager implements X509TrustManager {
