@@ -14,10 +14,10 @@ spring:
   http:
     encoding:
       charset: UTF-8
-  thymeleaf:
-    mode: HTML
-    encoding: UTF-8
-    cache: false
+#  thymeleaf:
+#    mode: HTML
+#    encoding: UTF-8
+#    cache: false
   datasource:
     name: test
     url: jdbc:mysql://192.168.1.137:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
@@ -29,10 +29,10 @@ spring:
   #  thymeleaf:
   #    cache: false
   #    enabled: false
-  mvc:
-    view:
-      prefix: /templates/
-      suffix: .html
+#  mvc:
+#    view:
+#      prefix: /templates/
+#      suffix: .html
   servlet:
     multipart:
       maxFileSize: 100MB
