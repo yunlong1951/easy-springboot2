@@ -218,15 +218,7 @@ public class HttpUtils {
         return result;
     }
 
-    public static void main(String[] args) {
-        String url = "http://47.95.2.78:8020/user/login";
-        Map<String,Object> map = new HashMap<>();
-        map.put("username","hm188");
-        map.put("password","C33367701511B4F6020EC61DED352059");
-        map.put("type","0");
-        String result= doPost(url,null,map);
-        System.out.println(result);
-    }
+
 
     private static class TrustAnyTrustManager implements X509TrustManager {
         @Override
