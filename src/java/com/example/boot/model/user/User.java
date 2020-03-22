@@ -1,9 +1,8 @@
-package com.example.boot.common.model.user;
+package com.example.boot.model.user;
 
 import com.example.boot.common.base.BaseModel;
-import com.example.boot.common.model.role.Role;
+import com.example.boot.model.role.Role;
 
-import java.io.Serializable;
 import java.util.Set;
 
 public class User extends BaseModel {

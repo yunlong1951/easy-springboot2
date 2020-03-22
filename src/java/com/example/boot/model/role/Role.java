@@ -1,20 +1,29 @@
-package com.example.boot.common.model.role;
+package com.example.boot.model.role;
 
 import com.example.boot.common.base.BaseModel;
 
 import java.util.Set;
 
 public class Role extends BaseModel {
-    private String id;
+    private Integer roleId;
     private String roleName;
+    private String roleCode;
     private Set<Permissions> permissions;
 
-    public String getId() {
-        return id;
+    public String getRoleCode() {
+        return roleCode;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
+    }
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
     public String getRoleName() {

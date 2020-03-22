@@ -1,42 +1,33 @@
 server:
   port: 8080
   servlet:
-    context-path: /easy/
-
-file:
-  upload:
-    staticAccessPath: /upload/**
-    staticPath: /upload/
-    uploadFolder: e:\\uploadFiles\\
-
-
+    context-path: /api
 spring:
   http:
     encoding:
       charset: UTF-8
-#  thymeleaf:
-#    mode: HTML
-#    encoding: UTF-8
-#    cache: false
   datasource:
-    name: test
-    url: jdbc:mysql://192.168.1.137:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    name: springboot
+    url: jdbc:mysql://127.0.0.1:3306/springboot?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
-    password: Zibohehe2016
+    password: lyl@654321
     # 使用druid数据源
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-  #  thymeleaf:
-  #    cache: false
-  #    enabled: false
-#  mvc:
-#    view:
-#      prefix: /templates/
-#      suffix: .html
   servlet:
     multipart:
       maxFileSize: 100MB
       maxRequestSize: 100MB
+  redis:
+    host: localhost
+    port: 6379
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+        max-wait: -1
+    timeout: 0
 
 logging:
   level:
@@ -45,10 +36,8 @@ logging:
     org.springframework: WARN
     org.spring.springboot.dao: debug
 
-#利用mybatis-plus 配置枚举类型
 mybatis:
-  mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.boot.common.model
+  mapper-locations: com/example/boot/mapper/*.xml
 
 #pagehelper
 pagehelper:

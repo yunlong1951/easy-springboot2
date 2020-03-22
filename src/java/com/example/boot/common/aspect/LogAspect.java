@@ -4,8 +4,6 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -17,7 +15,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +22,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.boot.common.aspect.annotation.Log;
 import com.example.boot.common.enums.LogType;
 import com.example.boot.common.enums.OperateStatus;
-import com.example.boot.common.model.log.OperateLog;
+import com.example.boot.model.log.OperateLog;
 import com.example.boot.common.utils.IpUtils;
 import com.example.boot.common.utils.ServletUtils;
 import com.example.boot.service.log.OperateLogService;

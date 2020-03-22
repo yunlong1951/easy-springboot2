@@ -1,4 +1,4 @@
-package com.example.boot.common.model.log;
+package com.example.boot.model.log;
 
 import java.util.Date;
 

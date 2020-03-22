@@ -55,6 +55,10 @@ public class JSONResult implements Serializable {
 		return jsonProvider(-3, msg, null, 0);
 	}
 
+	public static JSONObject callInvalidRequest(String url) {
+		return jsonProvider(-3, url, null, 0);
+	}
+
 	public static JSONObject callNoData(Object obj) {
 		return jsonProvider(-4, "暂无数据", obj, 0);
 	}
