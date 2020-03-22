@@ -25,7 +25,8 @@ public class MySessionManager extends DefaultWebSessionManager {
             return id;
         } else {
             //否则按默认规则从cookie取sessionId
-            return super.getSessionId(request, response);
+//            return super.getSessionId(request, response);
+            return "";
         }
     }
 }
