@@ -1,5 +1,6 @@
 package com.example.boot.common.config;
 
+import com.example.boot.common.bean.Redis;
 import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.session.mgt.eis.JavaUuidSessionIdGenerator;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -20,7 +21,7 @@ import java.util.Map;
 
 @Configuration
 
-public class shiroConfig {
+public class ShiroConfig {
 
     @Autowired
     Redis redis;
@@ -78,7 +79,7 @@ public class shiroConfig {
     private RedisManager redisManager() {
         RedisManager redisManager = new RedisManager();
         redisManager.setHost(redis.getHost()+":"+redis.getPort());
-        redisManager.setTimeout((int) redis.getTimeout().toMillis());
+        redisManager.setTimeout(redis.getTimeout());
         return redisManager;
     }
 

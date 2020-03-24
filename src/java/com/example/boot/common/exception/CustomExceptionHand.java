@@ -2,7 +2,6 @@ package com.example.boot.common.exception;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.boot.common.bean.JSONResult;
-import com.example.boot.common.utils.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
