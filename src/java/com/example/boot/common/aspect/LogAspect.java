@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.Map;
 
+import com.example.boot.common.aspect.annotation.WebLog;
+import com.example.boot.common.enums.OperateType;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
@@ -15,11 +17,11 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.boot.common.aspect.annotation.Log;
 import com.example.boot.common.enums.LogType;
 import com.example.boot.common.enums.OperateStatus;
 import com.example.boot.model.log.OperateLog;
@@ -37,7 +39,7 @@ public class LogAspect {
 	
 	private OperateLog operateLog;
 
-	@Pointcut("@annotation(com.example.boot.common.aspect.annotation.Log)")
+	@Pointcut("@annotation(com.example.boot.common.aspect.annotation.WebLog)")
 	public void logPointCut() {
 		operateLog = new OperateLog();
 	}
@@ -47,9 +49,9 @@ public class LogAspect {
 	 *
 	 * @param joinPoint
 	 */
-	@AfterReturning(pointcut = "logPointCut()")
-	public void doBefore(JoinPoint joinPoint) {
-		handler(joinPoint, null);
+	@AfterReturning(pointcut = "logPointCut()",returning = "ret",argNames = "joinPoint,ret")
+	public void doBefore(JoinPoint joinPoint,Object ret) {
+		handler(joinPoint, null,ret);
 	}
 
 	/**
@@ -60,28 +62,28 @@ public class LogAspect {
 	 */
 	@AfterThrowing(value = "logPointCut()", throwing = "e")
 	public void doAfter(JoinPoint joinPoint, Exception e) {
-		handler(joinPoint, e);
+		handler(joinPoint, e,null);
 	}
 	
 	
-	
-	protected void handler(final JoinPoint joinPoint, final Exception e) {
+	@Async
+	protected void handler(final JoinPoint joinPoint, final Exception e,final Object ret) {
 		try {
-			Log controllerLog = getAnnotation(joinPoint);
-			if (controllerLog == null) {
+			WebLog controllerWebLog = getAnnotation(joinPoint);
+			if (controllerWebLog == null) {
 				return;
 			}
 			operateLog = new OperateLog();
 			// 请求路径
 			operateLog.setOperateUrl(ServletUtils.getRequest().getRequestURL().toString());
 			operateLog.setOperateIp(IpUtils.getIp(ServletUtils.getRequest()));
-			if (controllerLog.logType().equals(LogType.操作日志)) {
+			if (controllerWebLog.logType().equals(LogType.操作日志)) {
 //				HttpSession session = ServletUtils.getRequest().getSession(); // 登录用户
 				//TODO:处理有用户登录时记录操作id
 			}
 
 			if (e != null) {
-				operateLog.setStatus(OperateStatus.异常);
+				operateLog.setStatus(OperateStatus.getValue(OperateStatus.异常));
 				operateLog.setErrorMsg(StringUtils.substring(e.getMessage(), 0, 500));
 			}
 			// 方法名
@@ -90,10 +92,13 @@ public class LogAspect {
 			operateLog.setMethod(className + "." + methodName + "()");
 			operateLog.setOperateTime(new Date());
 			//
-			getControllerDescription(controllerLog, operateLog);
+			getControllerDescription(controllerWebLog, operateLog);
+			if (ret!=null){
+				operateLog.setRet(JSONObject.toJSONString(ret));
+			}
 			// 保存日志
 //			operateLogService.save(operateLog);
-			log.info("测试aop日志");
+			log.info("测试aop日志"+operateLog.toString());
 		} catch (Exception exp) {
 			log.error("==前置通知异常==");
 			log.error("异常信息:{}", exp.getMessage());
@@ -101,22 +106,23 @@ public class LogAspect {
 		}
 	}
 	
-	@AfterReturning(value = "logPointCut()",returning = "ret",argNames = "ret")
-	public void logSuccess(Object ret) {
-		
-	}
+//	@AfterReturning(value = "logPointCut()",returning = "ret",argNames = "ret")
+//	public void logSuccess(Object ret) {
+//		log.info("666"+JSONObject.toJSONString(ret));
+//		log.info("测试aop日志返回"+operateLog.toString());
+//	}
 
 	/**
 	 * 注解中方法信息描述
 	 *
-	 * @param log
+	 * @param webLog
 	 * @param operateLog
 	 */
-	private void getControllerDescription(Log log, OperateLog operateLog) {
-		operateLog.setAction(log.action());
-		operateLog.setTitle(log.title());
-		operateLog.setLogType(log.logType());
-		if (log.isSaveRequestData()) {
+	private void getControllerDescription(WebLog webLog, OperateLog operateLog) {
+		operateLog.setAction(OperateType.getValue(webLog.action()));
+		operateLog.setTitle(webLog.title());
+		operateLog.setLogType(LogType.getValue(webLog.logType()));
+		if (webLog.isSaveRequestData()) {
 			setRequestValue(operateLog);
 		}
 	}
@@ -138,12 +144,12 @@ public class LogAspect {
 	 * @param joinPoint
 	 * @return
 	 */
-	private Log getAnnotation(JoinPoint joinPoint) {
+	private WebLog getAnnotation(JoinPoint joinPoint) {
 		Signature signature = joinPoint.getSignature();
 		MethodSignature methodSignature = (MethodSignature) signature;
 		Method method = methodSignature.getMethod();
 		if (method != null) {
-			return method.getAnnotation(Log.class);
+			return method.getAnnotation(WebLog.class);
 		}
 		return null;
 	}

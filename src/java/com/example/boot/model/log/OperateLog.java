@@ -18,7 +18,7 @@ public class OperateLog extends BaseModel {
 	/**
 	 * 功能请求
 	 */
-	private OperateType action;
+	private String action;
 
 	/**
 	 * 方法名称
@@ -53,7 +53,7 @@ public class OperateLog extends BaseModel {
 	/**
 	 * 操作状态（0正常 1异常）
 	 */
-	private OperateStatus status;
+	private String status;
 
 	/**
 	 * 错误消息
@@ -65,11 +65,21 @@ public class OperateLog extends BaseModel {
 	 */
 	private Date operateTime;
 
-	private LogType logType; // 日志类型
+	private String logType; // 日志类型
 
 	private String logInfo;
 
+	private String ret;
+
 	private static final long serialVersionUID = 1L;
+
+	public String getRet() {
+		return ret;
+	}
+
+	public void setRet(String ret) {
+		this.ret = ret;
+	}
 
 	public String getLogInfo() {
 		return logInfo;
@@ -81,10 +91,22 @@ public class OperateLog extends BaseModel {
 
 	@Override
 	public String toString() {
-		return "OperateLog [id=" + id + ", title=" + title + ", action=" + action + ", method=" + method
-				+ ", operateUser=" + operateUser + ", operateUrl=" + operateUrl + ", operateIp=" + operateIp
-				+ ", operateLocation=" + operateLocation + ", operateParam=" + operateParam + ", status=" + status
-				+ ", errorMsg=" + errorMsg + ", operateTime=" + operateTime + ", logType=" + logType + "]";
+		return "OperateLog{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", action=" + action +
+				", method='" + method + '\'' +
+				", operateUser='" + operateUser + '\'' +
+				", operateUrl='" + operateUrl + '\'' +
+				", operateIp='" + operateIp + '\'' +
+				", operateLocation='" + operateLocation + '\'' +
+				", operateParam='" + operateParam + '\'' +
+				", status=" + status +
+				", errorMsg='" + errorMsg + '\'' +
+				", operateTime=" + operateTime +
+				", logType=" + logType +
+				", logInfo='" + logInfo + '\'' +
+				'}';
 	}
 
 	public Long getId() {
@@ -103,20 +125,12 @@ public class OperateLog extends BaseModel {
 		this.title = title;
 	}
 
-	public Integer getAction() {
-		return OperateType.getValue(action);
+	public String getAction() {
+		return action;
 	}
 
-	public OperateType getActionType() {
-		return this.action;
-	}
-
-	public void setAction(OperateType action) {
+	public void setAction(String action) {
 		this.action = action;
-	}
-
-	public void setAction(Integer action) {
-		this.action = OperateType.getType(action);
 	}
 
 	public String getMethod() {
@@ -167,19 +181,11 @@ public class OperateLog extends BaseModel {
 		this.operateParam = operateParam;
 	}
 
-	public Integer getStatus() {
-		return OperateStatus.getValue(status);
-	}
-
-	public OperateStatus getStatusType() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = OperateStatus.getType(status);
-	}
-
-	public void setStatus(OperateStatus status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -199,20 +205,15 @@ public class OperateLog extends BaseModel {
 		this.operateTime = operateTime;
 	}
 
-	public LogType getLogType() {
+	public String getLogType() {
 		return logType;
 	}
 
-	public LogType getLogTypeType() {
-		return logType;
-	}
-
-	public void setLogType(LogType logType) {
+	public void setLogType(String logType) {
 		this.logType = logType;
 	}
 
-	public void setLogType(Integer logType) {
-		this.logType = LogType.getType(logType);
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
 	}
-
 }

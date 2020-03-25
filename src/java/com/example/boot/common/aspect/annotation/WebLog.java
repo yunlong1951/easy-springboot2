@@ -17,7 +17,7 @@ import com.example.boot.common.enums.OperateType;
 @Target({ElementType.METHOD,ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface Log {
+public @interface WebLog {
 	/**
 	 * 模块
 	 * @return
